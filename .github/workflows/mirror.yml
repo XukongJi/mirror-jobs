@@ -8,13 +8,12 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # 必须，允许往目标github仓库推送代码
+      contents: write
     steps:
-      - name: Git Mirror Sync
+      - name: Mirror Gitee to GitHub
         uses: pixta-dev/repository-mirroring-action@v1
         with:
           source_repo_url: https://gitee.com/jixukong/jieyou-embed-board.git
           target_repo_url: https://github.com/XukongJi/embed-board.git
         env:
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
-          # GITHUB_TOKEN由github自动注入，不需要手动填
