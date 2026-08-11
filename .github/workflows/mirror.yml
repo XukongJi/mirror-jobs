@@ -5,15 +5,16 @@ on:
     - cron: '*/10 * * * *'
 
 jobs:
-  sync:
+  mirror:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Mirror Gitee to GitHub
-        uses: pixta-dev/repository-mirroring-action@v1
+      - name: sync gitee to github
+        uses: yanglbme/gitee-mirror-github@main
         with:
-          source_repo_url: https://gitee.com/jixukong/jieyou-embed-board.git
-          target_repo_url: https://github.com/XukongJi/embed-board.git
+          gitee_repo: jixukong/jieyou-embed-board
+          github_repo: XukongJi/embed-board
         env:
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITHUB_TOKEN: ${{ github.TOKEN }}
