@@ -10,13 +10,18 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: 执行git镜像同步
+      - name: Git mirror sync
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GH_TOKEN: ${{ github.TOKEN }}
         run: |
           git config --global user.name "mirror-bot"
           git config --global user.email "mirror@example.com"
-          # 裸克隆Gitee仓库，带上GITEE_TOKEN认证
-          git clone --bare https://${{ secrets.GITEE_TOKEN }}@gitee.com/jixukong/jieyou-embed-board.git ./mirror.git
+          # 设置git凭证助手，把github token注入
+          git config --global credential.helper '!f() { echo "username=token"; echo "password=$GH_TOKEN"; }; f'
+
+          git clone --bare "https://${GITEE_TOKEN}@gitee.com/jixukong/jieyou-embed-board.git" ./mirror.git
           cd ./mirror.git
-          # 推送到github目标仓库，使用内置GITHUB_TOKEN
-          git remote add github https://${{ github.TOKEN }}@github.com/XukongJi/embed-board.git
+
+          git remote add github "https://github.com/XukongJi/embed-board.git"
           git push --mirror github
