@@ -1,0 +1,17 @@
+name: Sync Gitee → GitHub
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 * * * *'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror gitee repo to github
+        uses: wearerequired/git-mirror-action@v1
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        with:
+          source-repo: https://gitee.com/jixukong/jieyou-embed-board.git
+          destination-repo: https://${{ secrets.GITHUB_TOKEN }}@github.com/XukongJi/embed-board.git
